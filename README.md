@@ -22,6 +22,7 @@
 - lucide-react 图标
 - gray-matter（frontmatter 解析）+ marked / marked-highlight（Markdown → HTML）+ prismjs（代码高亮）
 - GitHub Pages 官方 Actions 自动部署
+- `study-cli`：随项目提供的命令行写作工具（commander + prompts + gray-matter）
 
 ## 快速开始
 
@@ -86,6 +87,82 @@ featured: true
 
 添加或修改文章后，重新运行 `npm run dev` / `npm run build` 即可（`predev` / `prebuild` 钩子会自动重新生成数据）。也可以手动运行 `npm run generate`。
 
+## study-cli 命令行工具
+
+`study-cli` 是随项目提供的一个独立 CLI（Node.js + TypeScript），让你不用离开终端即可创建、编辑、删除、搜索、查看和发布 `content/` 下的学习内容。CLI 与网站共享同一份 Markdown 数据源。
+
+### 安装
+
+```bash
+# 1. 安装依赖（npm 或 pnpm）
+npm install        # 或 pnpm install
+
+# 2. 编译 CLI（输出 dist/cli.js）
+npm run build:cli  # 或 pnpm run build:cli
+
+# 3. 全局链接，之后可以在任意目录运行 study
+npm link
+```
+
+> 提示：`vite build`（`npm run build`）会清空 `dist/` 目录。如果重新构建过网站，请再次运行 `npm run build:cli` 以重建 CLI。
+
+### 常用命令
+
+```bash
+study init                              # 检查项目 / Git / content / remote 是否完整
+study add "React Server Components"     # 快速创建（自动生成 slug，其余字段交互询问）
+study add                               # 完整交互创建
+study edit javascript/event-loop        # 按路径直接编辑
+study edit                              # 列表选择后编辑
+study delete old-note                   # 删除（需二次确认，并自动提交/推送）
+study list                              # 查看所有文章
+study list --category JavaScript        # 按分类筛选
+study list --tag Async                  # 按标签筛选
+study search "event loop"               # 搜索标题 / 摘要 / 标签 / 正文
+study status                            # 查看 branch、remote、未提交文件、最近提交
+study publish                           # 提交并推送 content/（无修改时提示“没有需要发布的内容”）
+study config                            # 交互式修改配置（保存到 ~/.study-cli/config.json）
+study config show                       # 查看当前配置
+study config set defaultCategory JavaScript
+```
+
+### 发布流程
+
+- `study publish` 等价于：`git add content/` → `git commit -m "content: update learning notes"` → `git push origin main`。
+- 推送前会显示目标 remote 与分支；push 失败会原样显示 Git 报错。
+- `study add "标题" --publish` 创建后自动提交推送，提交信息为 `content: add 标题`。
+- 不想真的推送时，可用 `study publish --dry-run` 预览将要提交的内容。
+
+### 配置项
+
+配置保存在 `~/.study-cli/config.json`（不会写入任何 GitHub Token）：
+
+| 配置项 | 说明 | 默认值 |
+| --- | --- | --- |
+| `defaultCategory` | 创建文章时的默认分类 | 空 |
+| `defaultEditor` | 编辑器（优先于 `$VISUAL` / `$EDITOR`） | 空 |
+| `defaultBranch` | 默认分支 | `main` |
+| `autoPush` | 是否自动 push | `false` |
+| `confirmBeforeCommit` | Git commit 前是否确认 | `true` |
+
+编辑器解析顺序：`config.defaultEditor` → `$VISUAL` → `$EDITOR` → `code --wait` → `nano`。
+
+### 安全约定
+
+- 删除文章必须二次确认，才会真正删除文件并执行 Git 操作。
+- 所有文件操作严格限制在项目 `content/` 目录内（阻止目录穿越）。
+- 不会执行 `git reset --hard`、删除 Git 历史等危险操作。
+- 不会覆盖未提交的用户修改；发布只会 `git add content/`。
+
+### 开发与测试
+
+```bash
+npm run build:cli   # 编译 CLI（tsc -p tsconfig.cli.json）
+npm run cli -- --help
+npm test            # 编译 CLI 并运行 node:test 测试
+npm run typecheck   # 同时类型检查网站与 CLI
+```
+
 ## 站点配置
 
 1. **站点 URL**：编辑根目录 `.env` 中的 `VITE_SITE_URL`，用于生成 Open Graph、sitemap.xml 与 robots.txt。
@@ -142,6 +219,9 @@ npm run build
 ├── public/                        # favicon、404 重定向等静态资源
 ├── scripts/
 │   └── generate-content.mjs       # 构建期内容生成脚本
+├── src/cli/                        # study-cli 源码（commands/ + lib/）
+├── tests/                          # CLI 基础测试（node:test）
+├── tsconfig.cli.json               # CLI 的 TypeScript 配置
 ├── src/
 │   ├── components/                # 组件（Navbar、PostCard、TiltCard…）
 │   ├── pages/                     # 页面（Home、Posts、Post…）
