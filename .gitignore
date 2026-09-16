@@ -1,0 +1,10 @@
+node_modules
+dist
+src/data/content.generated.ts
+*.local
+.DS_Store
+npm-debug.log*
+pnpm-debug.log*
+.idea
+.vscode/*
+!.vscode/extensions.json
