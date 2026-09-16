@@ -1,0 +1,274 @@
+/* ============ Markdown 文章排版 ============ */
+.markdown-body {
+  font-size: 1.02rem;
+  line-height: 1.9;
+  color: var(--text-1);
+  word-break: break-word;
+}
+
+.markdown-body > *:first-child {
+  margin-top: 0;
+}
+
+.markdown-body h2,
+.markdown-body h3 {
+  scroll-margin-top: calc(var(--nav-h) + 20px);
+  line-height: 1.4;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.markdown-body h2 {
+  font-size: 1.55rem;
+  margin: 2.4em 0 0.9em;
+  padding-top: 0.4em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.45em;
+}
+
+.markdown-body h3 {
+  font-size: 1.22rem;
+  margin: 1.8em 0 0.7em;
+}
+
+.markdown-body p {
+  margin: 0.9em 0;
+}
+
+.markdown-body a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--duration) var(--ease-out);
+}
+
+.markdown-body a:hover {
+  border-bottom-color: currentColor;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 1.6em;
+  margin: 0.9em 0;
+}
+
+.markdown-body li {
+  margin: 0.35em 0;
+}
+
+.markdown-body li::marker {
+  color: var(--accent-2);
+}
+
+.markdown-body blockquote {
+  margin: 1.4em 0;
+  padding: 0.9em 1.2em;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--glass);
+  color: var(--text-2);
+}
+
+.markdown-body blockquote p {
+  margin: 0.3em 0;
+}
+
+.markdown-body code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  padding: 0.14em 0.42em;
+  border-radius: 6px;
+  background: var(--glass-strong);
+  border: 1px solid var(--border);
+}
+
+.markdown-body pre {
+  position: relative;
+  margin: 1.5em 0;
+  padding: 1.25em 1.3em;
+  border-radius: var(--radius-md);
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  overflow-x: auto;
+  line-height: 1.65;
+}
+
+.markdown-body pre code {
+  display: block;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  font-size: 0.9rem;
+  color: #dbe2f6;
+}
+
+html[data-theme='light'] .markdown-body pre code {
+  color: #343b58;
+}
+
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.94em;
+  display: block;
+  overflow-x: auto;
+}
+
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid var(--border);
+  padding: 0.6em 0.9em;
+  text-align: left;
+}
+
+.markdown-body th {
+  background: var(--glass-strong);
+  font-weight: 650;
+}
+
+.markdown-body hr {
+  border: 0;
+  height: 1px;
+  margin: 2.2em 0;
+  background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+}
+
+.markdown-body img {
+  max-width: 100%;
+  border-radius: var(--radius-md);
+}
+
+/* 代码复制按钮 */
+.code-copy {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  color: var(--text-2);
+  background: var(--glass-strong);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 12px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--duration) var(--ease-out), background var(--duration) var(--ease-out);
+}
+
+.markdown-body pre:hover .code-copy,
+.markdown-body pre:focus-within .code-copy {
+  opacity: 1;
+}
+
+.code-copy:hover {
+  background: var(--highlight);
+  color: var(--text-1);
+}
+
+@media (hover: none) {
+  .code-copy {
+    opacity: 1;
+  }
+}
+
+/* ============ Prism 代码高亮（深色，Tokyo Night 风格） ============ */
+.markdown-body .token.comment,
+.markdown-body .token.prolog,
+.markdown-body .token.doctype,
+.markdown-body .token.cdata {
+  color: #697098;
+  font-style: italic;
+}
+.markdown-body .token.punctuation {
+  color: #8f9ac4;
+}
+.markdown-body .token.keyword,
+.markdown-body .token.operator,
+.markdown-body .token.atrule {
+  color: #c792ea;
+}
+.markdown-body .token.string,
+.markdown-body .token.char,
+.markdown-body .token.attr-value,
+.markdown-body .token.inserted {
+  color: #9ece6a;
+}
+.markdown-body .token.function,
+.markdown-body .token.method {
+  color: #82aaff;
+}
+.markdown-body .token.number,
+.markdown-body .token.boolean,
+.markdown-body .token.constant,
+.markdown-body .token.symbol {
+  color: #f78c6c;
+}
+.markdown-body .token.class-name,
+.markdown-body .token.builtin {
+  color: #ffcb6b;
+}
+.markdown-body .token.tag {
+  color: #f07178;
+}
+.markdown-body .token.attr-name,
+.markdown-body .token.property,
+.markdown-body .token.variable {
+  color: #d8dee9;
+}
+.markdown-body .token.regex,
+.markdown-body .token.important {
+  color: #f78c6c;
+}
+.markdown-body .token.deleted {
+  color: #f07178;
+}
+
+/* 浅色主题下调整高亮配色 */
+html[data-theme='light'] .markdown-body .token.comment,
+html[data-theme='light'] .markdown-body .token.prolog,
+html[data-theme='light'] .markdown-body .token.cdata {
+  color: #8b93a7;
+}
+html[data-theme='light'] .markdown-body .token.punctuation {
+  color: #5c6380;
+}
+html[data-theme='light'] .markdown-body .token.keyword,
+html[data-theme='light'] .markdown-body .token.operator {
+  color: #7c4dff;
+}
+html[data-theme='light'] .markdown-body .token.string,
+html[data-theme='light'] .markdown-body .token.char,
+html[data-theme='light'] .markdown-body .token.attr-value {
+  color: #2e7d32;
+}
+html[data-theme='light'] .markdown-body .token.function,
+html[data-theme='light'] .markdown-body .token.method {
+  color: #1565c0;
+}
+html[data-theme='light'] .markdown-body .token.number,
+html[data-theme='light'] .markdown-body .token.boolean {
+  color: #c62828;
+}
+html[data-theme='light'] .markdown-body .token.class-name {
+  color: #b26a00;
+}
+html[data-theme='light'] .markdown-body .token.tag {
+  color: #d32f2f;
+}
+html[data-theme='light'] .markdown-body .token.attr-name,
+html[data-theme='light'] .markdown-body .token.property {
+  color: #37474f;
+}
+
+@media (max-width: 640px) {
+  .markdown-body {
+    font-size: 0.98rem;
+  }
+  .markdown-body h2 {
+    font-size: 1.35rem;
+  }
+  .markdown-body h3 {
+    font-size: 1.12rem;
+  }
+}

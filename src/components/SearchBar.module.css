@@ -1,0 +1,109 @@
+.form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  border-radius: 999px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  box-shadow: inset 0 1px 0 var(--highlight), var(--shadow-md);
+  transition: border-color var(--duration) var(--ease-out), box-shadow var(--duration) var(--ease-out);
+}
+
+.form:focus-within {
+  border-color: rgba(124, 155, 255, 0.55);
+  box-shadow: inset 0 1px 0 var(--highlight), 0 0 0 4px rgba(124, 155, 255, 0.16), var(--shadow-md);
+}
+
+.md {
+  padding: 10px 12px 10px 18px;
+}
+
+.lg {
+  padding: 14px 14px 14px 22px;
+}
+
+.icon {
+  color: var(--text-3);
+  flex-shrink: 0;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text-1);
+  font-family: inherit;
+  font-size: 0.98rem;
+}
+
+.lg .input {
+  font-size: 1.06rem;
+}
+
+.input::placeholder {
+  color: var(--text-3);
+}
+
+.input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.clear {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--glass-strong);
+  color: var(--text-2);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background var(--duration) var(--ease-out), color var(--duration) var(--ease-out);
+}
+
+.clear:hover {
+  background: var(--highlight);
+  color: var(--text-1);
+}
+
+.submit {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent-grad);
+  cursor: pointer;
+  box-shadow: 0 8px 24px -8px rgba(124, 155, 255, 0.55);
+  flex-shrink: 0;
+  will-change: transform;
+}
+
+.lg .submit {
+  padding: 10px 24px;
+  font-size: 0.96rem;
+}
+
+.submit:hover {
+  filter: brightness(1.06);
+}
+
+@media (max-width: 560px) {
+  .lg {
+    padding: 10px 10px 10px 16px;
+  }
+  .submit {
+    padding: 8px 14px;
+  }
+  .lg .submit {
+    padding: 9px 16px;
+  }
+}

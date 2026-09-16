@@ -1,0 +1,69 @@
+.toc {
+  padding: 18px 18px 16px;
+  border-radius: var(--radius-md);
+  background: var(--glass);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  box-shadow: inset 0 1px 0 var(--highlight), var(--shadow-md);
+  font-size: 0.86rem;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 10px;
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 62vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 5px 10px;
+  border: 0;
+  border-left: 2px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-2);
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1.55;
+  cursor: pointer;
+  transition: color var(--duration) var(--ease-out), background var(--duration) var(--ease-out),
+    border-color var(--duration) var(--ease-out);
+}
+
+.item:hover {
+  color: var(--text-1);
+  background: var(--glass-strong);
+}
+
+.active {
+  color: var(--accent-text);
+  border-left-color: var(--accent);
+  background: rgba(124, 155, 255, 0.12);
+}
+
+html[data-theme='light'] .active {
+  color: #2437a6;
+}
+
+.sub .item {
+  padding-left: 22px;
+  font-size: 0.94em;
+  color: var(--text-3);
+}

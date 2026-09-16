@@ -1,0 +1,12 @@
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 60;
+  transform-origin: left center;
+  background: var(--accent-grad);
+  box-shadow: 0 0 14px rgba(124, 155, 255, 0.55);
+  pointer-events: none;
+}
