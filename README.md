@@ -199,6 +199,7 @@ npm run typecheck   # 同时类型检查网站与 CLI
 - 使用官方 `actions/configure-pages`、`actions/upload-pages-artifact`、`actions/deploy-pages`
 - `vite.config.ts` 使用 `base: './'`，资源路径为相对路径，**仓库名随意，不需要改任何路径**
 - 使用 hash 路由（`#/post/...`），刷新任意页面都不会 404
+- 构建时由工作流自动注入 `VITE_SITE_URL=https://<owner>.github.io/<repo>`，改仓库名无需改代码；`.env` 仅是本地开发用，已被 `.gitignore` 忽略
 
 ### 方式二：手动部署
 
