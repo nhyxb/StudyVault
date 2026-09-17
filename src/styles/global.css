@@ -30,10 +30,10 @@
   --sheen: rgba(255, 255, 255, 0.09);
 
   /* 液态玻璃材质令牌 */
-  --lg-tint: rgba(10, 13, 32, 0.34);
-  --lg-tint-dense: rgba(9, 12, 30, 0.6);
+  --lg-tint: rgba(10, 13, 32, 0.272);
+  --lg-tint-dense: rgba(9, 12, 30, 0.48);
   --lg-tint-solid: #0d1029;
-  --lg-fade: 34px;
+  --lg-fade: 56px;
   --lg-rim: linear-gradient(
     135deg,
     rgba(255, 255, 255, 0.9) 0%,
@@ -74,8 +74,8 @@ html[data-theme='light'] {
   --highlight: rgba(255, 255, 255, 0.92);
   --sheen: rgba(255, 255, 255, 0.55);
 
-  --lg-tint: rgba(255, 255, 255, 0.5);
-  --lg-tint-dense: rgba(255, 255, 255, 0.78);
+  --lg-tint: rgba(255, 255, 255, 0.4);
+  --lg-tint-dense: rgba(255, 255, 255, 0.624);
   --lg-tint-solid: #f4f6ff;
   --lg-rim: linear-gradient(
     135deg,
@@ -226,16 +226,16 @@ html[data-theme='light'] .liquid-glass.liquid-glass {
   z-index: -2;
   border-radius: inherit;
   pointer-events: none;
-  -webkit-backdrop-filter: blur(16px) saturate(1.5) brightness(1.05);
-  backdrop-filter: blur(16px) saturate(1.5) brightness(1.05);
+  -webkit-backdrop-filter: blur(0px) saturate(1.5) brightness(1.05);
+  backdrop-filter: blur(0px) saturate(1.5) brightness(1.05);
 }
 
 .liquid-glass--dense::before {
-  -webkit-backdrop-filter: blur(30px) saturate(1.6) brightness(1.04);
-  backdrop-filter: blur(30px) saturate(1.6) brightness(1.04);
+  -webkit-backdrop-filter: blur(0px) saturate(1.6) brightness(1.04);
+  backdrop-filter: blur(0px) saturate(1.6) brightness(1.04);
 }
 
-/* 边缘折射层：mask 四条渐变并集 = 沿四边向内淡出的折射带 */
+/* 边缘折射层：用更长的淡出距离避免出现硬边 */
 .liquid-glass::after {
   content: '';
   position: absolute;
@@ -244,26 +244,21 @@ html[data-theme='light'] .liquid-glass.liquid-glass {
   border-radius: inherit;
   pointer-events: none;
   -webkit-mask-image:
-    linear-gradient(to bottom, #000 0 6px, transparent var(--lg-fade)),
-    linear-gradient(to top, #000 0 6px, transparent var(--lg-fade)),
-    linear-gradient(to right, #000 0 6px, transparent var(--lg-fade)),
-    linear-gradient(to left, #000 0 6px, transparent var(--lg-fade));
+    linear-gradient(to bottom, #000 0%, transparent var(--lg-fade)),
+    linear-gradient(to top, #000 0%, transparent var(--lg-fade)),
+    linear-gradient(to right, #000 0%, transparent var(--lg-fade)),
+    linear-gradient(to left, #000 0%, transparent var(--lg-fade));
   mask-image:
-    linear-gradient(to bottom, #000 0 6px, transparent var(--lg-fade)),
-    linear-gradient(to top, #000 0 6px, transparent var(--lg-fade)),
-    linear-gradient(to right, #000 0 6px, transparent var(--lg-fade)),
-    linear-gradient(to left, #000 0 6px, transparent var(--lg-fade));
-  /* 回退：不支持 url() 滤镜时保留模糊玻璃边 */
-  -webkit-backdrop-filter: blur(5px) saturate(1.6) brightness(1.08);
-  backdrop-filter: blur(5px) saturate(1.6) brightness(1.08);
-  /* 真正的边缘折射 */
-  -webkit-backdrop-filter: url(#lg-refract) blur(5px) saturate(1.6) brightness(1.08);
-  backdrop-filter: url(#lg-refract) blur(5px) saturate(1.6) brightness(1.08);
-  transition: filter var(--duration) var(--ease-out);
+    linear-gradient(to bottom, #000 0%, transparent var(--lg-fade)),
+    linear-gradient(to top, #000 0%, transparent var(--lg-fade)),
+    linear-gradient(to right, #000 0%, transparent var(--lg-fade)),
+    linear-gradient(to left, #000 0%, transparent var(--lg-fade));
+  -webkit-backdrop-filter: url(#lg-refract) blur(0px) saturate(1.15) brightness(1.02);
+  backdrop-filter: url(#lg-refract) blur(0px) saturate(1.15) brightness(1.02);
 }
 
 .liquid-glass:hover::after {
-  filter: brightness(1.14) saturate(1.12);
+  filter: brightness(1.04) saturate(1.04);
 }
 
 .liquid-glass:hover.liquid-glass:hover {

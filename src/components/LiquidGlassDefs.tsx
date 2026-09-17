@@ -41,22 +41,22 @@ export default function LiquidGlassDefs() {
         <filter
           id="lg-refract"
           colorInterpolationFilters="sRGB"
-          x="0%"
-          y="0%"
-          width="100%"
-          height="100%"
+          x="-5%"
+          y="-5%"
+          width="110%"
+          height="110%"
         >
           <feImage x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="lg-h" href={H_MAP} />
           <feDisplacementMap
             in="SourceGraphic"
             in2="lg-h"
-            scale="56"
+            scale="18"
             xChannelSelector="R"
             yChannelSelector="G"
             result="lg-d1"
           />
           <feImage x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="lg-v" href={V_MAP} />
-          <feDisplacementMap in="lg-d1" in2="lg-v" scale="56" xChannelSelector="R" yChannelSelector="G" />
+          <feDisplacementMap in="lg-d1" in2="lg-v" scale="18" xChannelSelector="R" yChannelSelector="G" />
         </filter>
       </defs>
     </svg>
