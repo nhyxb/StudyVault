@@ -79,6 +79,16 @@ const marked = new Marked(
       }
     },
   }),
+  {
+    // 给正文标题补上 id，目录（TableOfContents）的滚动定位依赖它。
+    // id 与 extractHeadings 共用 createHeadingId，保证两边永远一致。
+    renderer: {
+      heading({ tokens, depth }) {
+        const text = rawText(tokens)
+        return `<h${depth} id="${escapeHtml(headingId(text))}">${this.parser.parseInline(tokens)}</h${depth}>\n`
+      },
+    },
+  },
 )
 
 marked.setOptions({ gfm: true, breaks: false })
@@ -109,6 +119,30 @@ function slugify(text) {
     .replace(/^-|-$/g, '')
 }
 
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+/** 取标题 token 的纯文本，用于生成与目录一致的 id（`code` 会保留反引号，交由 stripMdFormatting 处理）。 */
+function rawText(tokens) {
+  return (tokens ?? [])
+    .map((token) => {
+      if (typeof token?.text === 'string') return token.text
+      if (Array.isArray(token?.tokens)) return rawText(token.tokens)
+      return ''
+    })
+    .join('')
+}
+
+/** 标题 id：与目录数据同源，同一标题重复出现时追加 -2、-3。 */
+function headingId(rawTitle) {
+  return slugify(stripMdFormatting(rawTitle))
+}
+
 function readingTime(text) {
   if (!text) return 1
   const cjk = (text.match(/[\u3400-\u4dbf\u4e00-\u9fff]/g) || []).length
@@ -134,10 +168,10 @@ function extractHeadings(markdown) {
 
     const level = match[1].length
     const text = stripMdFormatting(match[2])
-    let id = slugify(text) || `section-${headings.length + 1}`
-    const count = used.get(id) || 0
-    used.set(id, count + 1)
-    if (count > 0) id = `${id}-${count + 1}`
+    const base = headingId(text) || `section-${headings.length + 1}`
+    const count = used.get(base) || 0
+    used.set(base, count + 1)
+    const id = count > 0 ? `${base}-${count + 1}` : base
     headings.push({ id, text, level })
   }
   return headings
