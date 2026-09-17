@@ -173,6 +173,15 @@ npm run typecheck   # 同时类型检查网站与 CLI
 
 2. **标题 / 副标题**：编辑 `src/config/site.ts`。
 3. **首页精选数量、热词**：编辑 `src/pages/HomePage.tsx`。
+4. **背景壁纸**：只需替换 `public/wallpaper.jpg`（文件名固定，必须保持 `.jpg` 后缀）。
+
+   页面里没有任何壁纸开关或选项，换图后重新 `npm run dev` / `npm run build` 即可生效：
+
+   - 建议尺寸 2400×1500 以上、横向图片，体积控制在 1MB 以内；小屏会自动裁切，无需另做移动端版本。
+   - 图片始终按 `cover` 铺满全屏，裁切以中心为基准；想改这个策略，调整 `src/components/Background.module.css` 里的 `.wallpaperImg`。
+   - 站点默认深色主题：壁纸会被压暗并叠加光晕，保证正文可读；浅色主题会自动加一层提亮遮罩。
+   - 想恢复纯渐变背景，删除 `public/wallpaper.jpg` 即可，加载失败会自动降级，不会出现破图。
+   - 部署后 `wallpaper.jpg` 可以被直接访问（例如 `https://你的站点/wallpaper.jpg`），**不要放含个人隐私的图片**。
 
 ## 部署到 GitHub Pages
 
@@ -216,7 +225,7 @@ npm run build
 │   ├── frontend/
 │   ├── mathematics/
 │   └── computer-science/
-├── public/                        # favicon、404 重定向等静态资源
+├── public/                        # favicon、404 重定向、背景壁纸 wallpaper.jpg
 ├── scripts/
 │   └── generate-content.mjs       # 构建期内容生成脚本
 ├── src/cli/                        # study-cli 源码（commands/ + lib/）

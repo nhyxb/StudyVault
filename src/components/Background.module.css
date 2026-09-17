@@ -16,6 +16,59 @@
     var(--bg);
 }
 
+/*
+ * 壁纸层：图片由 public/wallpaper.jpg 提供，替换文件即可换图。
+ * 想换位置/尺寸策略，只改下面的 background-position / background-size 即可。
+ * 注意：公网部署时该图片可以直链访问，请勿放置含隐私信息的图片。
+ */
+.wallpaper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.wallpaperImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  user-select: none;
+}
+
+/* 压暗壁纸，保证壁纸再亮也不影响正文可读性 */
+.wallpaperScrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(4, 6, 20, 0.26), rgba(4, 6, 20, 0.42));
+}
+
+:global(html[data-theme='light']) .wallpaperImg {
+  filter: saturate(0.92) brightness(1.04);
+}
+
+/* 浅色模式下壁纸只需要轻微削弱，主要靠下面的 lightVeil 提亮 */
+:global(html[data-theme='light']) .wallpaperScrim {
+  background: linear-gradient(180deg, rgba(238, 241, 252, 0.16), rgba(233, 237, 248, 0.26));
+}
+
+/*
+ * 浅色模式整体的提亮遮罩，避免深色壁纸把文字对比度拉低。
+ * 不依赖 color-mix 的浏览器上退化为无遮罩（scrim 已足够）。
+ */
+.lightVeil {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+@supports (background: color-mix(in srgb, white 50%, transparent)) {
+  :global(html[data-theme='light']) .lightVeil {
+    background: color-mix(in srgb, var(--bg) 30%, transparent);
+    opacity: 1;
+  }
+}
+
 .blob {
   position: absolute;
   border-radius: 50%;
