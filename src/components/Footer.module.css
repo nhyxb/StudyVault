@@ -3,8 +3,6 @@
   padding: 36px 0 40px;
   border-top: 1px solid var(--border);
   background: var(--glass-soft);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
 }
 
 .inner {

@@ -29,6 +29,21 @@
   --highlight: rgba(255, 255, 255, 0.14);
   --sheen: rgba(255, 255, 255, 0.09);
 
+  /* 液态玻璃材质令牌 */
+  --lg-tint: rgba(10, 13, 32, 0.34);
+  --lg-tint-dense: rgba(9, 12, 30, 0.6);
+  --lg-tint-solid: #0d1029;
+  --lg-fade: 34px;
+  --lg-rim: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.38) 18%,
+    rgba(255, 255, 255, 0.06) 36%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0.2) 70%,
+    rgba(255, 255, 255, 0.75) 100%
+  );
+
   --accent: #7c9bff;
   --accent-2: #a78bfa;
   --accent-3: #38e1ff;
@@ -58,6 +73,19 @@ html[data-theme='light'] {
   --glass-soft: rgba(255, 255, 255, 0.66);
   --highlight: rgba(255, 255, 255, 0.92);
   --sheen: rgba(255, 255, 255, 0.55);
+
+  --lg-tint: rgba(255, 255, 255, 0.5);
+  --lg-tint-dense: rgba(255, 255, 255, 0.78);
+  --lg-tint-solid: #f4f6ff;
+  --lg-rim: linear-gradient(
+    135deg,
+    rgba(31, 35, 66, 0.5) 0%,
+    rgba(31, 35, 66, 0.14) 20%,
+    rgba(31, 35, 66, 0.04) 40%,
+    rgba(31, 35, 66, 0.03) 52%,
+    rgba(31, 35, 66, 0.12) 72%,
+    rgba(31, 35, 66, 0.4) 100%
+  );
 
   --shadow-lg: 0 30px 70px -28px rgba(60, 70, 120, 0.35), 0 6px 18px rgba(60, 70, 120, 0.12);
   --shadow-md: 0 16px 40px -20px rgba(60, 70, 120, 0.28);
@@ -145,5 +173,125 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============ 液态玻璃 + 边缘折射 ============ */
+/*
+ * .liquid-glass 是全局玻璃面板工具类，三层结构：
+ *  1. 面板本体：半透明底色（padding-box）+ 1px 渐变描边棱线（border-box），
+ *     模拟玻璃受光的镜面边缘；
+ *  2. ::before（z:-2）：整面磨砂层，backdrop-filter 模糊 + 提饱和；
+ *  3. ::after（z:-1）：边缘折射层，backdrop-filter 引用 SVG 位移滤镜
+ *     #lg-refract（见 <LiquidGlassDefs />），使面板边缘附近的背景向外弯折；
+ *     mask 用四条渐变取并集，让折射带由边缘向内柔和淡出，避免硬接缝。
+ * 不支持 url() 滤镜的浏览器会回退到上一行声明的普通模糊边缘；
+ * prefers-reduced-transparency 下整体退化为不透明面板。
+ */
+.liquid-glass {
+  position: relative;
+  isolation: isolate;
+}
+
+.liquid-glass.liquid-glass {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--lg-tint), var(--lg-tint)) padding-box,
+    var(--lg-rim) border-box;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.06),
+    var(--shadow-md);
+  transition: box-shadow var(--duration) var(--ease-out);
+}
+
+.liquid-glass.liquid-glass--dense {
+  background:
+    linear-gradient(var(--lg-tint-dense), var(--lg-tint-dense)) padding-box,
+    var(--lg-rim) border-box;
+}
+
+html[data-theme='light'] .liquid-glass.liquid-glass {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(31, 35, 66, 0.06),
+    var(--shadow-md);
+}
+
+/* 磨砂层 */
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  border-radius: inherit;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(16px) saturate(1.5) brightness(1.05);
+  backdrop-filter: blur(16px) saturate(1.5) brightness(1.05);
+}
+
+.liquid-glass--dense::before {
+  -webkit-backdrop-filter: blur(30px) saturate(1.6) brightness(1.04);
+  backdrop-filter: blur(30px) saturate(1.6) brightness(1.04);
+}
+
+/* 边缘折射层：mask 四条渐变并集 = 沿四边向内淡出的折射带 */
+.liquid-glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  -webkit-mask-image:
+    linear-gradient(to bottom, #000 0 6px, transparent var(--lg-fade)),
+    linear-gradient(to top, #000 0 6px, transparent var(--lg-fade)),
+    linear-gradient(to right, #000 0 6px, transparent var(--lg-fade)),
+    linear-gradient(to left, #000 0 6px, transparent var(--lg-fade));
+  mask-image:
+    linear-gradient(to bottom, #000 0 6px, transparent var(--lg-fade)),
+    linear-gradient(to top, #000 0 6px, transparent var(--lg-fade)),
+    linear-gradient(to right, #000 0 6px, transparent var(--lg-fade)),
+    linear-gradient(to left, #000 0 6px, transparent var(--lg-fade));
+  /* 回退：不支持 url() 滤镜时保留模糊玻璃边 */
+  -webkit-backdrop-filter: blur(5px) saturate(1.6) brightness(1.08);
+  backdrop-filter: blur(5px) saturate(1.6) brightness(1.08);
+  /* 真正的边缘折射 */
+  -webkit-backdrop-filter: url(#lg-refract) blur(5px) saturate(1.6) brightness(1.08);
+  backdrop-filter: url(#lg-refract) blur(5px) saturate(1.6) brightness(1.08);
+  transition: filter var(--duration) var(--ease-out);
+}
+
+.liquid-glass:hover::after {
+  filter: brightness(1.14) saturate(1.12);
+}
+
+.liquid-glass:hover.liquid-glass:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    var(--shadow-lg);
+}
+
+html[data-theme='light'] .liquid-glass:hover.liquid-glass:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 rgba(31, 35, 66, 0.1),
+    var(--shadow-lg);
+}
+
+/* 无障碍：系统要求降低透明度时，退化为不透明面板 */
+@media (prefers-reduced-transparency: reduce) {
+  .liquid-glass::before,
+  .liquid-glass::after {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .liquid-glass.liquid-glass,
+  .liquid-glass.liquid-glass--dense {
+    background:
+      linear-gradient(var(--lg-tint-solid), var(--lg-tint-solid)) padding-box,
+      var(--lg-rim) border-box;
   }
 }

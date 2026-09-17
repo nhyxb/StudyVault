@@ -76,8 +76,6 @@ html[data-theme='light'] .badge {
   text-decoration: none;
   background: var(--glass);
   border: 1px solid var(--border);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   transition: color var(--duration) var(--ease-out), border-color var(--duration) var(--ease-out),
     transform var(--duration) var(--ease-out);
 }
@@ -104,8 +102,6 @@ html[data-theme='light'] .badge {
   border-radius: var(--radius-lg);
   background: var(--glass);
   border: 1px solid var(--border);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
   box-shadow: inset 0 1px 0 var(--highlight), var(--shadow-md);
 }
 
@@ -198,17 +194,11 @@ html[data-theme='light'] .browseButton {
   padding: 24px;
   border-radius: var(--radius-lg);
   text-decoration: none;
-  background: linear-gradient(160deg, rgba(124, 155, 255, 0.14), rgba(167, 139, 250, 0.08) 45%, rgba(56, 225, 255, 0.08));
-  border: 1px solid rgba(124, 155, 255, 0.24);
-  backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
-  box-shadow: inset 0 1px 0 var(--highlight), var(--shadow-md);
-  transition: transform var(--duration) var(--ease-out), border-color var(--duration) var(--ease-out);
+  transition: transform var(--duration) var(--ease-out);
 }
 
 .featuredCard:hover {
   transform: translateY(-4px);
-  border-color: rgba(124, 155, 255, 0.5);
 }
 
 .featuredCategory {
@@ -217,6 +207,10 @@ html[data-theme='light'] .browseButton {
   color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.06em;
+}
+
+html[data-theme='light'] .featuredCategory {
+  color: #2437a6;
 }
 
 .featuredTitle {

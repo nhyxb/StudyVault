@@ -48,6 +48,8 @@ export default function TiltCard({ children, className, style, maxTilt = 4 }: Ti
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
+      {/* 高光层用真实子元素而非 ::before：::before/::after 已让给 .liquid-glass 的磨砂与折射层 */}
+      <span className={styles.sheen} aria-hidden="true" />
       {children}
     </div>
   )

@@ -44,7 +44,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
   }
 
   return (
-    <nav className={styles.toc} aria-label="文章目录">
+    <nav className={`${styles.toc} liquid-glass`} aria-label="文章目录">
       <p className={styles.title}>
         <ListTree size={15} aria-hidden="true" /> 目录
       </p>

@@ -17,7 +17,7 @@ export default function TagsPage() {
       </header>
 
       {tags.length > 0 ? (
-        <div className={styles.cloud}>
+        <div className={`${styles.cloud} liquid-glass`}>
           {tags.map((item) => {
             const scale = item.count / maxCount
             const sizeClass = scale >= 0.75 ? styles.large : scale >= 0.4 ? styles.medium : styles.small

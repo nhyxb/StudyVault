@@ -33,7 +33,7 @@ export default function SearchBar({
   return (
     <form
       role="search"
-      className={cn(styles.form, size === 'lg' ? styles.lg : styles.md, className)}
+      className={cn('liquid-glass', styles.form, size === 'lg' ? styles.lg : styles.md, className)}
       onSubmit={handleSubmit}
     >
       <Search className={styles.icon} size={size === 'lg' ? 22 : 18} aria-hidden="true" />

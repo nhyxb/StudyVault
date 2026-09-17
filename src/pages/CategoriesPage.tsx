@@ -17,7 +17,7 @@ export default function CategoriesPage() {
       {categories.length > 0 ? (
         <div className={styles.grid}>
           {categories.map((item) => (
-            <TiltCard key={item.name} className={styles.card}>
+            <TiltCard key={item.name} className={`${styles.card} liquid-glass`}>
               <FolderOpen size={22} aria-hidden="true" className={styles.icon} />
               <div className={styles.text}>
                 <span className={styles.name}>{item.name}</span>

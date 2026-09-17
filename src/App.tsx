@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import Background from './components/Background'
+import LiquidGlassDefs from './components/LiquidGlassDefs'
 import ScrollToTop from './components/ScrollToTop'
 import MainLayout from './layouts/MainLayout'
 import { RouterProvider } from './lib/router'
@@ -48,6 +49,7 @@ export default function App() {
     <ThemeProvider>
       <RouterProvider>
         <Background />
+        <LiquidGlassDefs />
         <AppRoutes />
         <ScrollToTop />
       </RouterProvider>

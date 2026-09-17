@@ -44,7 +44,7 @@ export default function PostPage({ slug }: { slug: string }) {
       <ReadingProgress />
 
       <div className={styles.layout}>
-        <article className={styles.article}>
+        <article className={`${styles.article} liquid-glass liquid-glass--dense`}>
           <Link to="/posts" className={styles.back}>
             <ArrowLeft size={16} aria-hidden="true" />
             返回学习内容
@@ -87,7 +87,7 @@ export default function PostPage({ slug }: { slug: string }) {
           </header>
 
           {/* 移动端折叠目录 */}
-          <details className={styles.mobileToc}>
+          <details className={`${styles.mobileToc} liquid-glass`}>
             <summary>目录</summary>
             <TableOfContents headings={post.headings} />
           </details>

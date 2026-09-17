@@ -18,6 +18,7 @@ import { useMagnetic } from '../lib/hooks'
 import { Link } from '../lib/router'
 import { navigate } from '../lib/router-core'
 import { useTheme } from '../lib/theme-context'
+import { cn } from '../lib/utils'
 import styles from './HomePage.module.css'
 
 export default function HomePage() {
@@ -78,17 +79,17 @@ export default function HomePage() {
 
       {/* 统计 */}
       <section className={styles.stats} aria-label="学习统计">
-        <TiltCard className={styles.statCard}>
+        <TiltCard className={`${styles.statCard} liquid-glass`}>
           <BookMarked className={styles.statIcon} size={22} aria-hidden="true" />
           <span className={styles.statNumber}>{stats.posts}</span>
           <span className={styles.statLabel}>总文章数</span>
         </TiltCard>
-        <TiltCard className={styles.statCard}>
+        <TiltCard className={`${styles.statCard} liquid-glass`}>
           <FolderOpen className={styles.statIcon} size={22} aria-hidden="true" />
           <span className={styles.statNumber}>{stats.categories}</span>
           <span className={styles.statLabel}>分类数量</span>
         </TiltCard>
-        <TiltCard className={styles.statCard}>
+        <TiltCard className={`${styles.statCard} liquid-glass`}>
           <Hash className={styles.statIcon} size={22} aria-hidden="true" />
           <span className={styles.statNumber}>{stats.tags}</span>
           <span className={styles.statLabel}>标签数量</span>
@@ -138,7 +139,7 @@ export default function HomePage() {
               <Link
                 key={post.slug}
                 to={`/post/${post.slug}`}
-                className={styles.featuredCard}
+                className={cn('liquid-glass', styles.featuredCard)}
               >
                 <span className={styles.featuredCategory}>{post.category}</span>
                 <span className={styles.featuredTitle}>{post.title}</span>

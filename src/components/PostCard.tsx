@@ -11,7 +11,7 @@ interface PostCardProps {
 
 export default function PostCard({ post }: PostCardProps) {
   return (
-    <TiltCard className={styles.card}>
+    <TiltCard className={`${styles.card} liquid-glass`}>
       <div className={styles.topRow}>
         <Link
           to={`/category/${encodeURIComponent(post.category)}`}

@@ -10,7 +10,7 @@
 - 🗂 学习内容列表：关键词搜索、分类筛选、标签筛选、按更新时间排序
 - 📄 内容详情页：Markdown、代码高亮（Prism）、标题目录、引用 / 表格 / 列表 / 代码块
 - 🏷 分类页、标签页与对应筛选页
-- 🧊 液态玻璃视觉系统：深色默认 + 浅色 / 深色主题切换（localStorage 记忆）
+- 🧊 液态玻璃视觉系统：三层玻璃材质（半透明底色 + 1px 渐变棱线、整面磨砂、SVG 位移滤镜 `#lg-refract` 实现的边缘折射），深色默认 + 浅色 / 深色主题切换（localStorage 记忆）；`prefers-reduced-transparency` 下自动退化为不透明面板
 - 🖱 鼠标动效：背景光晕缓慢跟随、卡片 3D tilt、高光跟随、按钮磁吸
 - ♿ 完整响应式与可访问性：支持键盘操作、aria-label、prefers-reduced-motion
 - 🚀 纯静态站点，使用 hash 路由，完美兼容 GitHub Pages 项目子路径

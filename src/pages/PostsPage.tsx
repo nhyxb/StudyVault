@@ -51,7 +51,7 @@ export default function PostsPage() {
         <p className={styles.subtitle}>共 {filtered.length} 篇笔记，可搜索、筛选与排序</p>
       </header>
 
-      <div className={styles.toolbar}>
+      <div className={`${styles.toolbar} liquid-glass`}>
         <SearchBar
           value={query}
           onChange={setQuery}

@@ -5,23 +5,22 @@
   will-change: transform;
 }
 
-.card::before {
-  content: '';
+.sheen {
   position: absolute;
   inset: 0;
   z-index: 1;
   border-radius: inherit;
   pointer-events: none;
   background: radial-gradient(
-    460px circle at var(--mx, 50%) var(--my, 50%),
+    520px circle at var(--mx, 50%) var(--my, 50%),
     var(--sheen),
-    transparent 44%
+    transparent 42%
   );
   opacity: 0;
   transition: opacity 300ms ease;
 }
 
-.card:hover::before {
+.card:hover .sheen {
   opacity: 1;
 }
 
@@ -30,7 +29,7 @@
     transform: none;
     transition: none;
   }
-  .card::before {
+  .sheen {
     transition: none;
   }
 }
