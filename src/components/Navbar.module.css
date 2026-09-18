@@ -44,11 +44,6 @@
   letter-spacing: -0.01em;
 }
 
-.brandTagline {
-  font-size: 0.72rem;
-  color: var(--text-3);
-}
-
 .nav {
   display: flex;
   align-items: center;
@@ -141,11 +136,5 @@ html[data-theme='light'] .active {
   }
   .mobileMenu {
     display: block;
-  }
-}
-
-@media (max-width: 420px) {
-  .brandTagline {
-    display: none;
   }
 }

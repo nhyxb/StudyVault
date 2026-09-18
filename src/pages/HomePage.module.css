@@ -38,13 +38,6 @@ html[data-theme='light'] .badge {
   color: transparent;
 }
 
-.subtitle {
-  margin: 4px 0 0;
-  font-size: 1.35rem;
-  font-weight: 600;
-  color: var(--text-1);
-}
-
 .heroDescription {
   margin: 14px 0 0;
   max-width: 560px;

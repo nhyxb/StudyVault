@@ -12,7 +12,6 @@ export default function Footer() {
             <BookOpen size={18} aria-hidden="true" />
             <span>{site.name}</span>
           </div>
-          <p className={styles.tagline}>{site.tagline}</p>
           <nav className={styles.links} aria-label="页脚导航">
             <Link to="/posts">学习内容</Link>
             <Link to="/categories">分类</Link>

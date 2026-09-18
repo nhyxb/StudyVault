@@ -50,7 +50,6 @@ export default function Navbar() {
             </span>
             <span className={styles.brandText}>
               <span className={styles.brandName}>Study Vault</span>
-              <span className={styles.brandTagline}>记录学习，沉淀知识</span>
             </span>
           </Link>
 

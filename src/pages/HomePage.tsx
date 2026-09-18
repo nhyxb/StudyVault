@@ -55,7 +55,6 @@ export default function HomePage() {
         <h1 className={styles.title}>
           Study <span className={styles.gradient}>Vault</span>
         </h1>
-        <p className={styles.subtitle}>{site.tagline}</p>
         <p className={styles.heroDescription}>{site.description}</p>
 
         <SearchBar
