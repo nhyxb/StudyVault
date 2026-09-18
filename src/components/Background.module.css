@@ -17,14 +17,30 @@
 }
 
 /*
- * 壁纸层：图片由 public/wallpaper.jpg 提供，替换文件即可换图。
- * 想换位置/尺寸策略，只改下面的 background-position / background-size 即可。
- * 注意：公网部署时该图片可以直链访问，请勿放置含隐私信息的图片。
+ * 壁纸层：图片地址来自当前壁纸选择（见 src/config/wallpapers.ts）。
+ * 想换铺满策略，只改下面的 object-fit / object-position 即可。
+ * 注意：公网部署时壁纸图片可以直链访问，请勿放置含隐私信息的图片。
  */
 .wallpaper {
   position: absolute;
   inset: 0;
   overflow: hidden;
+  animation: wallpaper-fade 520ms var(--ease-out);
+}
+
+@keyframes wallpaper-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wallpaper {
+    animation: none;
+  }
 }
 
 .wallpaperImg {

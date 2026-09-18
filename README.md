@@ -8,7 +8,7 @@
 - 🗂 学习内容列表：关键词搜索、分类筛选、标签筛选、按更新时间排序
 - 📄 内容详情页：Markdown、代码高亮（Prism）、标题目录、引用 / 表格 / 列表 / 代码块
 - 🏷 分类页、标签页与对应筛选页
-- 🧊 液态玻璃视觉系统：三层玻璃材质（半透明底色 + 1px 渐变棱线、整面磨砂、SVG 位移滤镜 `#lg-refract` 实现的边缘折射），深色默认 + 浅色 / 深色主题切换（localStorage 记忆）；`prefers-reduced-transparency` 下自动退化为不透明面板
+- 🧊 液态玻璃视觉系统：三层玻璃材质（半透明底色 + 1px 渐变棱线、整面磨砂、SVG 位移滤镜 `#lg-refract` 实现的边缘折射），深色默认 + 浅色 / 深色主题切换（localStorage 记忆）、内置壁纸切换（内置图 / 纯渐变 / 自定义 URL，localStorage 记忆）；`prefers-reduced-transparency` 下自动退化为不透明面板
 - 🖱 鼠标动效：背景光晕缓慢跟随、卡片 3D tilt、高光跟随、按钮磁吸
 - ♿ 完整响应式与可访问性：支持键盘操作、aria-label、prefers-reduced-motion
 - 🚀 纯静态站点，使用 hash 路由，完美兼容 GitHub Pages 项目子路径
@@ -171,15 +171,17 @@ npm run typecheck   # 同时类型检查网站与 CLI
 
 2. **标题 / 副标题**：编辑 `src/config/site.ts`。
 3. **首页精选数量、热词**：编辑 `src/pages/HomePage.tsx`。
-4. **背景壁纸**：只需替换 `public/wallpaper.jpg`（文件名固定，必须保持 `.jpg` 后缀）。
+4. **背景壁纸**：在导航栏的「壁纸」按钮中切换，选项包括内置壁纸、纯渐变、自定义图片 URL，选择保存在浏览器 localStorage。
 
-   页面里没有任何壁纸开关或选项，换图后重新 `npm run dev` / `npm run build` 即可生效：
+   内置壁纸放在 `public/wallpapers/`，并在 `src/config/wallpapers.ts` 的 `builtinWallpapers` 中登记（`id` 唯一、`name` 显示名、`file` 为相对 `public/` 的路径）。加图或换图后重新 `npm run dev` / `npm run build` 即可生效：
 
-   - 建议尺寸 2400×1500 以上、横向图片，体积控制在 1MB 以内；小屏会自动裁切，无需另做移动端版本。
+   - 建议尺寸 2400×1500 以上、横向图片，单张体积控制在 1MB 以内；小屏会自动裁切，无需另做移动端版本。
+   - `public/wallpapers/default.jpg` 是默认图；`aurora.jpg` / `dusk.jpg` 是随项目生成的渐变图，不需要时删除文件并从配置里移除对应条目即可。
    - 图片始终按 `cover` 铺满全屏，裁切以中心为基准；想改这个策略，调整 `src/components/Background.module.css` 里的 `.wallpaperImg`。
    - 站点默认深色主题：壁纸会被压暗并叠加光晕，保证正文可读；浅色主题会自动加一层提亮遮罩。
-   - 想恢复纯渐变背景，删除 `public/wallpaper.jpg` 即可，加载失败会自动降级，不会出现破图。
-   - 部署后 `wallpaper.jpg` 可以被直接访问（例如 `https://你的站点/wallpaper.jpg`），**不要放含个人隐私的图片**。
+   - 选择「纯渐变」不会加载任何壁纸图片，无需删除文件；壁纸加载失败时也会自动降级，不会出现破图。
+   - 自定义 URL 仅接受 `http(s)` 图片直链，只保存在当前浏览器，不会上传到任何服务。
+   - 部署后 `wallpapers/` 下的图片可以被直接访问（例如 `https://你的站点/wallpapers/default.jpg`），**不要放含个人隐私的图片**。
 
 ## 部署到 GitHub Pages
 
@@ -224,7 +226,7 @@ npm run build
 │   ├── frontend/
 │   ├── mathematics/
 │   └── computer-science/
-├── public/                        # favicon、404 重定向、背景壁纸 wallpaper.jpg
+├── public/                        # favicon、404 重定向、壁纸目录 wallpapers/
 ├── scripts/
 │   └── generate-content.mjs       # 构建期内容生成脚本
 ├── src/cli/                        # study-cli 源码（commands/ + lib/）

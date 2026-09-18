@@ -1,5 +1,6 @@
 import { useEffect, useState, type CSSProperties } from 'react'
 import { usePrefersReducedMotion } from '../lib/hooks'
+import { useWallpaper } from '../lib/wallpaper-context'
 import styles from './Background.module.css'
 
 interface BlobStyle extends CSSProperties {
@@ -8,15 +9,13 @@ interface BlobStyle extends CSSProperties {
 }
 
 /**
- * 壁纸约定：直接替换 public/wallpaper.jpg 即可换图，页面代码无需改动。
- * 文件名固定，格式必须为 jpg；建议 2400×1500 以上、横向、体积 < 1MB。
- * 想恢复纯渐变背景，删除该文件即可（加载失败时自动降级，不会出现破图）。
+ * 壁纸由 WallpaperProvider 控制（内置清单 / 纯渐变 / 自定义 URL）。
+ * 图片加载失败时自动降级为纯渐变，不会出现破图。
  */
-const WALLPAPER_SRC = `${import.meta.env.BASE_URL}wallpaper.jpg`
-
 export default function Background() {
   const reduced = usePrefersReducedMotion()
-  const [hasWallpaper, setHasWallpaper] = useState(true)
+  const { src } = useWallpaper()
+  const [failedSrc, setFailedSrc] = useState<string | null>(null)
 
   useEffect(() => {
     if (reduced) return
@@ -54,15 +53,15 @@ export default function Background() {
   return (
     <div className={styles.bg} aria-hidden="true">
       <div className={styles.base} />
-      {hasWallpaper && (
-        <div className={styles.wallpaper}>
+      {src && src !== failedSrc && (
+        <div key={src} className={styles.wallpaper}>
           <img
             className={styles.wallpaperImg}
-            src={WALLPAPER_SRC}
+            src={src}
             alt=""
             decoding="async"
             fetchPriority="high"
-            onError={() => setHasWallpaper(false)}
+            onError={() => setFailedSrc(src)}
           />
           <div className={styles.wallpaperScrim} />
         </div>

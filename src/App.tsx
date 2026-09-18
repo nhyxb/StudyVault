@@ -6,6 +6,7 @@ import MainLayout from './layouts/MainLayout'
 import { RouterProvider } from './lib/router'
 import { matchPath, useHashLocation } from './lib/router-core'
 import { ThemeProvider } from './lib/theme'
+import { WallpaperProvider } from './lib/wallpaper'
 import CategoriesPage from './pages/CategoriesPage'
 import CategoryPage from './pages/CategoryPage'
 import HomePage from './pages/HomePage'
@@ -47,12 +48,14 @@ function AppRoutes() {
 export default function App() {
   return (
     <ThemeProvider>
-      <RouterProvider>
-        <Background />
-        <LiquidGlassDefs />
-        <AppRoutes />
-        <ScrollToTop />
-      </RouterProvider>
+      <WallpaperProvider>
+        <RouterProvider>
+          <Background />
+          <LiquidGlassDefs />
+          <AppRoutes />
+          <ScrollToTop />
+        </RouterProvider>
+      </WallpaperProvider>
     </ThemeProvider>
   )
 }

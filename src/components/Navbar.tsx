@@ -4,6 +4,7 @@ import { Link } from '../lib/router'
 import { useHashLocation } from '../lib/router-core'
 import { cn } from '../lib/utils'
 import ThemeToggle from './ThemeToggle'
+import WallpaperPicker from './WallpaperPicker'
 import styles from './Navbar.module.css'
 
 const navItems = [
@@ -67,6 +68,7 @@ export default function Navbar() {
           </nav>
 
           <div className={styles.actions}>
+            <WallpaperPicker />
             <ThemeToggle />
             <button
               type="button"
