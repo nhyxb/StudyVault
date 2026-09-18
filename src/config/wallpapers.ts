@@ -10,6 +10,7 @@ export const builtinWallpapers: BuiltinWallpaper[] = [
   { id: 'default', name: '默认', file: 'wallpapers/default.jpg' },
   { id: 'aurora', name: '极光', file: 'wallpapers/aurora.jpg' },
   { id: 'dusk', name: '暮色', file: 'wallpapers/dusk.jpg' },
+  { id: 'wolf', name: '狼', file: 'wallpapers/wolf.webp' },
 ]
 
 export const defaultWallpaperId = 'default'
