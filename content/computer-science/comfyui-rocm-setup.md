@@ -3,12 +3,12 @@ title: "在 AMD RX 6700 XT 上用 ROCm 搭建 ComfyUI"
 description: "在 Arch 系 Linux 上用 Miniconda + ROCm 版 PyTorch 部署 ComfyUI 的完整记录：HSA 架构覆盖、镜像加速、性能对比与踩坑"
 category: "计算机科学"
 tags:
-  - AI
-  - ComfyUI
-  - ROCm
-  - PyTorch
-  - Linux
-  - 环境搭建
+  - "AI"
+  - "ComfyUI"
+  - "ROCm"
+  - "PyTorch"
+  - "Linux"
+  - "环境搭建"
 date: "2026-09-19"
 updated: "2026-09-19"
 featured: false
@@ -148,21 +148,3 @@ HSA_OVERRIDE_GFX_VERSION=10.3.0 ~/miniconda3/envs/comfyui72/bin/python -c \
 # 关掉某个实例
 kill $(pgrep -f "main.py --listen 127.0.0.1 --port 8188")
 ```
-
-## 附：用 NapCat 自动汇报进度
-
-本次部署顺手做了一个进度播报：NapCat 的 OneBot 11 HTTP 服务（`http://127.0.0.1:3000`，token 在 `~/.config/napcat-qq-plugin/config/onebot11_*.json`），用它发送文字与图片：
-
-```bash
-# 发私聊文字
-curl -s -X POST http://127.0.0.1:3000/send_private_msg \
-  -H "Authorization: Bearer <token>" -H "Content-Type: application/json" \
-  -d '{"user_id": 10001, "message": "进度：50%"}'
-
-# 发本地图片（绝对路径即可）
-curl -s -X POST http://127.0.0.1:3000/send_private_msg \
-  -H "Authorization: Bearer <token>" -H "Content-Type: application/json" \
-  -d '{"user_id": 10001, "message": [{"type":"image","data":{"file":"/abs/path/pic.png"}}]}'
-```
-
-配合后台监控脚本，就能在下载 / 安装 / 测试各阶段自动推送到 QQ，适合长时间无人值守的任务。
