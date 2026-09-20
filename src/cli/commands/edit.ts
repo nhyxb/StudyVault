@@ -5,7 +5,6 @@ import {
   deleteArticle,
   findArticle,
   listArticles,
-  listCategories,
   updateArticle,
   type Article,
   type ArticleFrontmatter,
@@ -14,7 +13,13 @@ import { loadConfig, type StudyConfig } from '../lib/config.js'
 import { today } from '../lib/date.js'
 import { editText, resolveEditor } from '../lib/editor.js'
 import { color, ensureTTY, error, info, success } from '../lib/ui.js'
-import { parseTags } from './add.js'
+import {
+  parseTags,
+  promptCategory,
+  promptTags,
+  promptText,
+  promptConfirm,
+} from '../lib/prompts.js'
 
 export interface EditOptions {
   title?: string
@@ -39,76 +44,7 @@ const onCancel = () => {
   throw new Error('已取消')
 }
 
-async function promptCategory(root: string, current: string): Promise<string> {
-  ensureTTY('分类')
-  const categories = listCategories(root)
-  const choices = [
-    ...categories.map((name) => ({ title: name, value: name })),
-    { title: '＋ 新建分类', value: '__new__' },
-  ]
-  const answer = await prompts(
-    {
-      type: 'select',
-      name: 'category',
-      message: '分类',
-      choices,
-      initial: Math.max(0, categories.indexOf(current)),
-    },
-    { onCancel },
-  )
-  if (answer.category === '__new__') {
-    const created = await prompts(
-      {
-        type: 'text',
-        name: 'category',
-        message: '新分类名称',
-        validate: (value) => (String(value ?? '').trim() ? true : '分类不能为空'),
-      },
-      { onCancel },
-    )
-    const category = String(created.category ?? '').trim()
-    if (!category) throw new Error('分类不能为空')
-    return category
-  }
-  return String(answer.category)
-}
-
-async function askText(message: string, initial: string): Promise<string> {
-  ensureTTY(message)
-  const answer = await prompts(
-    { type: 'text', name: 'value', message, initial },
-    { onCancel },
-  )
-  return String(answer.value ?? '').trim()
-}
-
-async function askTags(current: string[]): Promise<string[]> {
-  ensureTTY('标签')
-  const answer = await prompts(
-    {
-      type: 'list',
-      name: 'tags',
-      message: '标签（逗号分隔）',
-      separator: ',',
-      initial: current.join(','),
-    },
-    { onCancel },
-  )
-  const tags = Array.isArray(answer.tags) ? answer.tags.map((tag) => String(tag)) : []
-  return tags.flatMap((tag) => parseTags(tag))
-}
-
-async function askToggle(message: string, initial: boolean): Promise<boolean> {
-  ensureTTY(message)
-  const answer = await prompts(
-    { type: 'toggle', name: 'value', message, initial, active: 'yes', inactive: 'no' },
-    { onCancel },
-  )
-  return Boolean(answer.value)
-}
-
 async function askBody(current: string, config: StudyConfig): Promise<string> {
-  ensureTTY('正文内容')
   const editor = resolveEditor(config)
   if (!editor) throw new Error('未找到可用的编辑器（请设置 $VISUAL / $EDITOR 或 study config）')
   info(`将使用 ${editor} 编辑正文（保存并关闭后继续）`)
@@ -169,11 +105,11 @@ async function buildInteractiveChanges(
   const changes: ArticleChanges = {}
   const selected = Array.isArray(fields) ? fields.map((field) => String(field)) : []
   for (const field of selected) {
-    if (field === 'title') changes.title = await askText('新标题', article.title)
-    else if (field === 'description') changes.description = await askText('新摘要', article.description)
-    else if (field === 'category') changes.category = await promptCategory(root, article.category)
-    else if (field === 'tags') changes.tags = await askTags(article.tags)
-    else if (field === 'featured') changes.featured = await askToggle('是否精选', article.featured)
+    if (field === 'title') changes.title = await promptText('新标题', article.title)
+    else if (field === 'description') changes.description = await promptText('新摘要', article.description)
+    else if (field === 'category') changes.category = await promptCategory(root, { current: article.category })
+    else if (field === 'tags') changes.tags = await promptTags(article.tags)
+    else if (field === 'featured') changes.featured = await promptConfirm('是否精选', article.featured)
     else if (field === 'body') changes.body = await askBody(article.body, config)
   }
   return changes
