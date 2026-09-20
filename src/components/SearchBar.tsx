@@ -1,5 +1,5 @@
 import { Search, X } from 'lucide-react'
-import type { FormEvent } from 'react'
+import { memo, useCallback, type FormEvent } from 'react'
 import { useMagnetic } from '../lib/hooks'
 import { cn } from '../lib/utils'
 import styles from './SearchBar.module.css'
@@ -14,7 +14,7 @@ interface SearchBarProps {
   className?: string
 }
 
-export default function SearchBar({
+function SearchBar({
   value,
   onChange,
   onSubmit,
@@ -25,10 +25,10 @@ export default function SearchBar({
 }: SearchBarProps) {
   const magnetic = useMagnetic<HTMLButtonElement>(5)
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = useCallback((event: FormEvent) => {
     event.preventDefault()
     onSubmit?.()
-  }
+  }, [onSubmit])
 
   return (
     <form
@@ -71,3 +71,5 @@ export default function SearchBar({
     </form>
   )
 }
+
+export default memo(SearchBar)

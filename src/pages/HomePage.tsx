@@ -7,7 +7,7 @@ import {
   Search,
   Sparkles,
 } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import EmptyState from '../components/EmptyState'
 import PostGrid from '../components/PostGrid'
 import SearchBar from '../components/SearchBar'
@@ -21,6 +21,8 @@ import { useTheme } from '../lib/theme-context'
 import { cn } from '../lib/utils'
 import styles from './HomePage.module.css'
 
+const HOT_TAGS = ['JavaScript', 'CSS', 'HTTP', 'Async', 'Browser', 'Network']
+
 export default function HomePage() {
   const stats = getStats()
   const recent = getRecentPosts(4)
@@ -28,17 +30,6 @@ export default function HomePage() {
   const [query, setQuery] = useState('')
   const { theme } = useTheme()
   const browseMagnetic = useMagnetic<HTMLAnchorElement>(7)
-
-  const hotTags = useMemo(() => {
-    return [
-      'JavaScript',
-      'CSS',
-      'HTTP',
-      'Async',
-      'Browser',
-      'Network',
-    ]
-  }, [])
 
   const handleSearch = () => {
     navigate(query.trim() ? `/posts?q=${encodeURIComponent(query.trim())}` : '/posts')
@@ -67,7 +58,7 @@ export default function HomePage() {
         />
 
         <div className={styles.quickTags}>
-          {hotTags.map((tag) => (
+          {HOT_TAGS.map((tag) => (
             <Link key={tag} to={`/tag/${encodeURIComponent(tag)}`} className={styles.quickTag}>
               <Search size={12} aria-hidden="true" />
               {tag}

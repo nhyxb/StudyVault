@@ -1,5 +1,5 @@
 import { Check, Image as ImageIcon, X } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { builtinWallpaperSrc, builtinWallpapers } from '../config/wallpapers'
 import { useMagnetic } from '../lib/hooks'
 import { cn } from '../lib/utils'
@@ -38,20 +38,20 @@ export default function WallpaperPicker() {
     }
   }, [open])
 
-  const choose = (next: WallpaperSelection) => {
+  const choose = useCallback((next: WallpaperSelection) => {
     select(next)
     setError('')
     setOpen(false)
-  }
+  }, [select])
 
-  const applyCustom = () => {
+  const applyCustom = useCallback(() => {
     const url = customUrl.trim()
     if (!isValidWallpaperUrl(url)) {
       setError('请输入以 http:// 或 https:// 开头的图片链接')
       return
     }
     choose({ type: 'custom', url })
-  }
+  }, [customUrl, choose])
 
   const isNone = selection.type === 'none'
 

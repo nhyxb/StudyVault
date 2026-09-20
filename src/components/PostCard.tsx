@@ -1,4 +1,5 @@
 import { ArrowRight, Clock3, Sparkles } from 'lucide-react'
+import { memo } from 'react'
 import type { Post } from '../types'
 import { formatDate } from '../lib/utils'
 import { Link } from '../lib/router'
@@ -9,7 +10,7 @@ interface PostCardProps {
   post: Post
 }
 
-export default function PostCard({ post }: PostCardProps) {
+function PostCard({ post }: PostCardProps) {
   return (
     <TiltCard className={`${styles.card} liquid-glass`}>
       <div className={styles.topRow}>
@@ -56,3 +57,5 @@ export default function PostCard({ post }: PostCardProps) {
     </TiltCard>
   )
 }
+
+export default memo(PostCard)

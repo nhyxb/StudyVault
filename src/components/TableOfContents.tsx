@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ListTree } from 'lucide-react'
 import type { Heading } from '../types'
 import { usePrefersReducedMotion } from '../lib/hooks'
@@ -34,14 +34,14 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
     return () => observer.disconnect()
   }, [headings])
 
-  if (headings.length === 0) return null
-
-  const handleClick = (id: string) => {
+  const handleClick = useCallback((id: string) => {
     document.getElementById(id)?.scrollIntoView({
       behavior: reduced ? 'auto' : 'smooth',
       block: 'start',
     })
-  }
+  }, [reduced])
+
+  if (headings.length === 0) return null
 
   return (
     <nav className={`${styles.toc} liquid-glass`} aria-label="文章目录">

@@ -1,8 +1,13 @@
+import { memo } from 'react'
 import type { Post } from '../types'
 import PostCard from './PostCard'
 import styles from './PostGrid.module.css'
 
-export default function PostGrid({ posts }: { posts: Post[] }) {
+interface PostGridProps {
+  posts: Post[]
+}
+
+function PostGrid({ posts }: PostGridProps) {
   if (posts.length === 0) return null
   return (
     <div className={styles.grid}>
@@ -12,3 +17,5 @@ export default function PostGrid({ posts }: { posts: Post[] }) {
     </div>
   )
 }
+
+export default memo(PostGrid)

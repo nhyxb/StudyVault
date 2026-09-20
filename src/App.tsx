@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { lazy, Suspense, type ReactNode } from 'react'
 import Background from './components/Background'
 import LiquidGlassDefs from './components/LiquidGlassDefs'
 import ScrollToTop from './components/ScrollToTop'
@@ -7,14 +7,15 @@ import { RouterProvider } from './lib/router'
 import { matchPath, useHashLocation } from './lib/router-core'
 import { ThemeProvider } from './lib/theme'
 import { WallpaperProvider } from './lib/wallpaper'
-import CategoriesPage from './pages/CategoriesPage'
-import CategoryPage from './pages/CategoryPage'
 import HomePage from './pages/HomePage'
-import NotFoundPage from './pages/NotFoundPage'
-import PostPage from './pages/PostPage'
-import PostsPage from './pages/PostsPage'
-import TagPage from './pages/TagPage'
-import TagsPage from './pages/TagsPage'
+
+const PostsPage = lazy(() => import('./pages/PostsPage'))
+const PostPage = lazy(() => import('./pages/PostPage'))
+const CategoriesPage = lazy(() => import('./pages/CategoriesPage'))
+const CategoryPage = lazy(() => import('./pages/CategoryPage'))
+const TagsPage = lazy(() => import('./pages/TagsPage'))
+const TagPage = lazy(() => import('./pages/TagPage'))
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 function AppRoutes() {
   const { pathname } = useHashLocation()
@@ -42,7 +43,13 @@ function AppRoutes() {
     page = <NotFoundPage />
   }
 
-  return <MainLayout>{page}</MainLayout>
+  return (
+    <MainLayout>
+      <Suspense fallback={<div className="container" style={{ padding: '4rem 0', textAlign: 'center', opacity: 0.6 }}>加载中…</div>}>
+        {page}
+      </Suspense>
+    </MainLayout>
+  )
 }
 
 export default function App() {
