@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import {
   ArrowLeft,
   ArrowRight,
@@ -17,7 +18,12 @@ import { formatDate } from '../lib/utils'
 import styles from './PostPage.module.css'
 
 export default function PostPage({ slug }: { slug: string }) {
-  const post = getPost(slug)
+  const post = useMemo(() => getPost(slug), [slug])
+
+  const adjacentPosts = useMemo(() => {
+    if (!post) return { prev: null, next: null }
+    return getAdjacentPosts(slug)
+  }, [slug, post])
 
   if (!post) {
     return (
@@ -37,7 +43,7 @@ export default function PostPage({ slug }: { slug: string }) {
     )
   }
 
-  const { prev, next } = getAdjacentPosts(slug)
+  const { prev, next } = adjacentPosts
 
   return (
     <div className="container">

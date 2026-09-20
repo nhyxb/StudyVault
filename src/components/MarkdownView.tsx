@@ -14,6 +14,8 @@ export default function MarkdownView({ html }: MarkdownViewProps) {
     const root = ref.current
     if (!root) return
 
+    const buttons: Array<{ element: HTMLButtonElement; handler: () => void; timer?: number }> = []
+
     root.querySelectorAll('pre').forEach((pre) => {
       if (pre.querySelector('.code-copy')) return
 
@@ -23,7 +25,7 @@ export default function MarkdownView({ html }: MarkdownViewProps) {
       button.textContent = '复制'
       button.setAttribute('aria-label', '复制代码')
 
-      button.addEventListener('click', async () => {
+      const handleClick = async () => {
         const code = pre.querySelector('code')
         if (!code) return
         try {
@@ -32,13 +34,33 @@ export default function MarkdownView({ html }: MarkdownViewProps) {
         } catch {
           button.textContent = '复制失败'
         }
-        window.setTimeout(() => {
+        const timer = window.setTimeout(() => {
           button.textContent = '复制'
         }, 1600)
-      })
+        
+        // 保存 timer 引用以便清理
+        const buttonData = buttons.find(b => b.element === button)
+        if (buttonData) {
+          buttonData.timer = timer
+        }
+      }
 
+      button.addEventListener('click', handleClick)
       pre.appendChild(button)
+      
+      buttons.push({ element: button, handler: handleClick })
     })
+
+    // 清理函数：移除所有事件监听器、定时器和按钮元素
+    return () => {
+      buttons.forEach(({ element, handler, timer }) => {
+        element.removeEventListener('click', handler)
+        if (timer !== undefined) {
+          window.clearTimeout(timer)
+        }
+        element.remove()
+      })
+    }
   }, [html])
 
   return <div ref={ref} className="markdown-body" dangerouslySetInnerHTML={{ __html: html }} />

@@ -1,5 +1,5 @@
 import { FilterX, Library } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import EmptyState from '../components/EmptyState'
 import PostGrid from '../components/PostGrid'
 import SearchBar from '../components/SearchBar'
@@ -25,7 +25,7 @@ export default function PostsPage() {
 
   const hasFilters = Boolean(query.trim() || category || tag || sort !== 'newest')
 
-  const applyParams = (patch: { category?: string; tag?: string; sort?: string }) => {
+  const applyParams = useCallback((patch: { category?: string; tag?: string; sort?: string }) => {
     const next = new URLSearchParams(search)
     for (const [key, value] of Object.entries(patch)) {
       if (value && value !== '' && value !== 'newest') next.set(key, value)
@@ -33,12 +33,12 @@ export default function PostsPage() {
     }
     const qs = next.toString()
     navigate(qs ? `/posts?${qs}` : '/posts')
-  }
+  }, [search])
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setQuery('')
     navigate('/posts')
-  }
+  }, [])
 
   return (
     <div className="container">

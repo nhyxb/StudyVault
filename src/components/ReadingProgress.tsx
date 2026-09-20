@@ -13,7 +13,13 @@ export default function ReadingProgress() {
       raf = requestAnimationFrame(() => {
         const root = document.documentElement
         const max = root.scrollHeight - root.clientHeight
-        setProgress(max > 0 ? root.scrollTop / max : 0)
+        const newProgress = max > 0 ? root.scrollTop / max : 0
+        
+        // 只有在变化超过阈值时才更新状态，避免不必要的重渲染
+        setProgress(prev => {
+          const delta = Math.abs(prev - newProgress)
+          return delta > 0.001 ? newProgress : prev
+        })
       })
     }
 

@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { ArrowLeft, FolderOpen } from 'lucide-react'
 import EmptyState from '../components/EmptyState'
 import PostGrid from '../components/PostGrid'
@@ -6,8 +7,8 @@ import { Link } from '../lib/router'
 import styles from './FilteredPage.module.css'
 
 export default function CategoryPage({ category }: { category: string }) {
-  const info = getCategoryInfo(category)
-  const posts = getPostsByCategory(category)
+  const info = useMemo(() => getCategoryInfo(category), [category])
+  const posts = useMemo(() => getPostsByCategory(category), [category])
 
   return (
     <div className="container">

@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { ArrowLeft, Hash } from 'lucide-react'
 import EmptyState from '../components/EmptyState'
 import PostGrid from '../components/PostGrid'
@@ -6,8 +7,8 @@ import { Link } from '../lib/router'
 import styles from './FilteredPage.module.css'
 
 export default function TagPage({ tag }: { tag: string }) {
-  const info = getTagInfo(tag)
-  const posts = getPostsByTag(tag)
+  const info = useMemo(() => getTagInfo(tag), [tag])
+  const posts = useMemo(() => getPostsByTag(tag), [tag])
 
   return (
     <div className="container">

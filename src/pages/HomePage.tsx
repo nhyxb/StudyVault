@@ -7,7 +7,7 @@ import {
   Search,
   Sparkles,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import EmptyState from '../components/EmptyState'
 import PostGrid from '../components/PostGrid'
 import SearchBar from '../components/SearchBar'
@@ -21,19 +21,19 @@ import { useTheme } from '../lib/theme-context'
 import { cn } from '../lib/utils'
 import styles from './HomePage.module.css'
 
-const HOT_TAGS = ['JavaScript', 'CSS', 'HTTP', 'Async', 'Browser', 'Network']
+const HOT_TAGS = ['JavaScript', 'CSS', 'HTTP', 'Async', 'Browser', 'Network'] as const
 
 export default function HomePage() {
-  const stats = getStats()
-  const recent = getRecentPosts(4)
-  const featured = getFeaturedPosts().slice(0, 3)
+  const stats = useMemo(() => getStats(), [])
+  const recent = useMemo(() => getRecentPosts(4), [])
+  const featured = useMemo(() => getFeaturedPosts().slice(0, 3), [])
   const [query, setQuery] = useState('')
   const { theme } = useTheme()
   const browseMagnetic = useMagnetic<HTMLAnchorElement>(7)
 
-  const handleSearch = () => {
+  const handleSearch = useCallback(() => {
     navigate(query.trim() ? `/posts?q=${encodeURIComponent(query.trim())}` : '/posts')
-  }
+  }, [query])
 
   return (
     <div className="container">
